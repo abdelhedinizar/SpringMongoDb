@@ -1,6 +1,5 @@
 package com.nizar.back.demo.service.impl;
 
-import com.nizar.back.demo.dao.MyProductQueryService;
 import com.nizar.back.demo.dao.MyProductRepository;
 import com.nizar.back.demo.dto.enums.GenericStatus;
 import com.nizar.back.demo.dto.input.product.ProductInputDto;
@@ -33,9 +32,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private MyProductRepository myProductRepository;
 
-    @Autowired
-    private MyProductQueryService productQueryService;
-
     @Override
     public GenericOutputDto addProducts(SetProductInputDto setProductInputDto) {
         GenericOutputDto setProductSpecOutput = new GenericOutputDto();
@@ -65,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
     private void deleteExistantProducts(Set<MyProduct> products) {
         List<String> productNames = products.stream().map(product ->
                 product.getName()).collect(Collectors.toList());
-        List<MyProduct> productsTodelete = productQueryService.getProductByName(productNames);
+        List<MyProduct> productsTodelete = myProductRepository.findByName(productNames);
         myProductRepository.deleteAll(productsTodelete);
 
         /*  List<List<MyProduct>> partsIds = Lists.partition(products.stream().collect(Collectors.toList()), CLAUSE_LIMIT);

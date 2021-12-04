@@ -1,23 +1,20 @@
 package com.nizar.back.demo.dao;
 
 import com.nizar.back.demo.entities.MyProduct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class MyProductQueryService {
+public class CustomizedProductManagerImpl implements CustomizedProductManager {
 
-    private final MongoTemplate mongoTemplate;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-    public MyProductQueryService(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
-    }
-
-    public List<MyProduct> getProductByName(List<String> names) {
+    @Override
+    public List<MyProduct> findByName(List<String> names) {
         Query query = new Query().addCriteria(Criteria.where("name").in(names));
         return mongoTemplate.find(query, MyProduct.class);
     }
