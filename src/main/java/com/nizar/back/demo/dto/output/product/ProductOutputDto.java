@@ -1,4 +1,4 @@
-package com.nizar.back.demo.dto.output;
+package com.nizar.back.demo.dto.output.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
