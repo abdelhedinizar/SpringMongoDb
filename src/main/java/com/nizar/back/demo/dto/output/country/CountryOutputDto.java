@@ -1,8 +1,8 @@
-package com.nizar.back.demo.dto.output.product;
+package com.nizar.back.demo.dto.output.country;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nizar.back.demo.entities.MyProduct;
+import com.nizar.back.demo.entities.country.Country;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,23 +11,20 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class ProductOutputDto implements Serializable {
+public class CountryOutputDto implements Serializable {
 
     /**
      * The Constant serialVersionUID.
      */
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty("Id")
-    private String id;
+    @JsonProperty("Code")
+    private String code;
     @JsonProperty("Name")
     private String name;
-    @JsonProperty("Price")
-    private int price;
 
-    public ProductOutputDto(MyProduct product){
-        id = product.getId();
-        name = product.getName();
-        price = product.getPrice();
+    public CountryOutputDto(Country country){
+        name = country.getCountryName();
+        code = country.getCountryCode();
     }
 }

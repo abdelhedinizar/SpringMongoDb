@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import static com.nizar.back.demo.exception.ErrorConstant.ERROR_CODE_AND_MESSAGE_MAP;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
         try {
             List<JsonMappingException.Reference> path = ((MismatchedInputException) ex.getCause()).getPath();
             field = path.get(path.size() - 1).getFieldName();
-        }catch ( Exception e) {
+        } catch (Exception e) {
 
         }
         ErrorDetailsDTO details = new ErrorDetailsDTO(ex.getMessage(), NOT_DEFINED, field);
@@ -74,29 +74,28 @@ public class GlobalExceptionHandler {
         cRefError.setStatus(httpStatus.value());
         cRefError.setErrors(errorDetailsDTOS);
 
-       ex.getBindingResult().getAllErrors().stream().forEach( objectError -> {
-           String field = getField(objectError);
-           String codeError = getErrorCode(objectError);
-           String errorMessage = objectError.getDefaultMessage();
-           ErrorDetailsDTO details = new ErrorDetailsDTO(errorMessage, codeError, field);
-           errorDetailsDTOS.add(details);
+        ex.getBindingResult().getAllErrors().stream().forEach(objectError -> {
+            String field = getField(objectError);
+            String codeError = getErrorCode(objectError);
+            String errorMessage = objectError.getDefaultMessage();
+            ErrorDetailsDTO details = new ErrorDetailsDTO(errorMessage, codeError, field);
+            errorDetailsDTOS.add(details);
 
-       });
+        });
         return new ResponseEntity<>(cRefError, new HttpHeaders(), httpStatus);
     }
 
     private String getErrorCode(ObjectError fieldError) {
         ConstraintViolationImpl unwarp = fieldError.unwrap(ConstraintViolationImpl.class);
         String errorMessageTemplate = unwarp.getMessageTemplate();
-        HashMap<String,String> result = new HashMap<>();
-        return result.get(errorMessageTemplate);
+        return ERROR_CODE_AND_MESSAGE_MAP.get(errorMessageTemplate);
     }
 
     private String getField(ObjectError objectError) {
         String field = NOT_DEFINED;
-        if(objectError instanceof FieldError) {
+        if (objectError instanceof FieldError) {
             field = ((FieldError) objectError).getField();
-        } else if(objectError.getCode().equalsIgnoreCase(SortByEnum.class.getSimpleName())) {
+        } else if (objectError.getCode().equalsIgnoreCase(SortByEnum.class.getSimpleName())) {
             field = objectError.getArguments()[1].toString();
         }
         return field;

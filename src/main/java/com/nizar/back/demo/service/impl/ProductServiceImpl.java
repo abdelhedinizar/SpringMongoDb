@@ -1,5 +1,6 @@
 package com.nizar.back.demo.service.impl;
 
+import com.google.common.collect.Lists;
 import com.nizar.back.demo.dao.MyProductRepository;
 import com.nizar.back.demo.dto.enums.GenericStatus;
 import com.nizar.back.demo.dto.input.product.ProductInputDto;
@@ -44,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
 
     private Set<MyProduct> getProductsToBeInserted(SetProductInputDto setProductInputDto) {
         Set<MyProduct> products = new HashSet<>();
-        setProductInputDto.getProductDtos().stream().forEach(productDto -> {
+        setProductInputDto.getProducts().stream().forEach(productDto -> {
             MyProduct product = new MyProduct();
             product.setName(productDto.getName());
             product.setPrice(productDto.getPrice());
@@ -57,18 +58,14 @@ public class ProductServiceImpl implements ProductService {
         return myProductRepository.saveAll(products);
     }
 
-
     private void deleteExistantProducts(Set<MyProduct> products) {
         List<String> productNames = products.stream().map(product ->
                 product.getName()).collect(Collectors.toList());
-        List<MyProduct> productsTodelete = myProductRepository.findByName(productNames);
-        myProductRepository.deleteAll(productsTodelete);
-
-        /*  List<List<MyProduct>> partsIds = Lists.partition(products.stream().collect(Collectors.toList()), CLAUSE_LIMIT);
+        List<MyProduct> productsTodelete = myProductRepository.findByElement(productNames,"name",MyProduct.class);
+          List<List<MyProduct>> partsIds = Lists.partition(productsTodelete, CLAUSE_LIMIT);
         for (int i = 0; i < partsIds.size(); i++) {
-            myProductRepository.findByName(partsIds.get(i));
+            myProductRepository.deleteAll(partsIds.get(i));
         }
-        */
     }
 
     @Override

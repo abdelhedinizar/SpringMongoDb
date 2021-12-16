@@ -28,8 +28,8 @@ public class ProductControllerImpl implements ProductController {
     @PostMapping("/Product")
     @ResponseBody
     @WsLog(serviceName = "api/dc/product")
-    public ResponseEntity<GenericOutputDto> addProducts(@Valid @RequestBody SetProductInputDto setProductInputDto) {
-        GenericOutputDto result = productService.addProducts(setProductInputDto);
+    public ResponseEntity<GenericOutputDto> addProducts(@Valid @RequestBody SetProductInputDto productInput) {
+        GenericOutputDto result = productService.addProducts(productInput);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 

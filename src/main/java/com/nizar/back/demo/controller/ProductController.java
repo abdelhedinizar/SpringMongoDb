@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.net.URISyntaxException;
 
-@Api(value = "ProductService", produces = "application/json", tags = {"Service"})
+@Api(value = "ProductService", produces = "application/json", tags = {"Product"})
 public interface ProductController {
 
     @ApiOperation(value = "Product web Service", notes = "", response = String.class, authorizations = {})

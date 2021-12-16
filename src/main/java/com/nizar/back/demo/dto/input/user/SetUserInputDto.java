@@ -1,4 +1,4 @@
-package com.nizar.back.demo.dto.input.product;
+package com.nizar.back.demo.dto.input.user;
 
 import com.nizar.back.demo.exception.ErrorConstant;
 import lombok.Getter;
@@ -11,11 +11,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class SetProductInputDto implements Serializable {
+public class SetUserInputDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @NotEmpty(message = ErrorConstant.REQUIRED_FIELD)
     @Valid
-    private List<ProductDto> products;
+    private List<UserDto> users;
 }
